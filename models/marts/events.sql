@@ -1,4 +1,5 @@
-{% set event_types = ["checkout", "package_shipped", "add_to_cart","page_view"] %}
+-- {% set event_types = ["checkout", "package_shipped", "add_to_cart","page_view"] %}
+{% set event_types = obtener_valores(ref('stg_sql_server_dbo__events'), 'event_type') %}
 WITH stg_events AS (
     SELECT * 
     FROM {{ ref('stg_sql_server_dbo__events') }}

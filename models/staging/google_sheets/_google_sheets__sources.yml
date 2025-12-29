@@ -3,7 +3,7 @@ version: 2
 sources:
   - name: google_sheets # name of the source
     schema: google_sheets # this is the schema our raw data lives in
-    database: JARTIGAS_DEV_BRONZE_DB # this is the name of our database
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database
 
     quoting:
       database: false
@@ -32,3 +32,9 @@ sources:
               - positive_values
           - name: month
           - name: _fivetran_synced
+      - name: users
+        columns:
+          - name: Nombre
+          - name: DNI
+          - name: email
+          - name: fecha_alta_sistema

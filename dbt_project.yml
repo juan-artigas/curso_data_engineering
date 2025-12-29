@@ -36,14 +36,25 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
+  +transient: false
   curso_data_engineering:
     # Applies to all files under models/example/
-    example:
-      +materialized: table
     marts:
       +materialized: table
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_GOLD_DB"
+      core:
+        +schema: core
     staging:
       +materialized: view
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
+      google_sheets:
+        +schema: google_sheets
+      sql_server_dbo:
+        +schema: sql_server_dbo
 seeds:
-    +database: "JARTIGAS_DEV_BRONZE_DB"
-    +schema: "SEEDS"
+  +schema: seed_data
+  +database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"        
+snapshots:
+  +transient: false
+  +target_database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
+  +target_schema: snapshots
