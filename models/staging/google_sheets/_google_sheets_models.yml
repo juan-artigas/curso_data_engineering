@@ -23,3 +23,12 @@ models:
       - name: date_load
         data_tests:
           - not_null
+  - name: users
+    columns:
+      - name: nombre
+      - name: dni
+        data_tests:
+          - not_null
+          - unique
+      - name: email
+      - name: fecha_alta_sistema
