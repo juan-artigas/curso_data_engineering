@@ -33,8 +33,15 @@ sources:
           - name: month
           - name: _fivetran_synced
       - name: users
+        loaded_at_field: fecha_alta_sistema
         columns:
           - name: Nombre
           - name: DNI
           - name: email
+            data_tests:
+              - check_mail:
+                  config:
+                    severity: error
+                    error_if: ">1000"
+                    warn_if: ">0"
           - name: fecha_alta_sistema

@@ -51,6 +51,10 @@ models:
         +schema: google_sheets
       sql_server_dbo:
         +schema: sql_server_dbo
+    ejercicios_practicos:
+      +materialized: view
+      +database: "{{ env_var('DBT_ENVIRONMENTS') }}_SILVER_DB"
+      +schema: test
 seeds:
   +schema: seed_data
   +database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"        
