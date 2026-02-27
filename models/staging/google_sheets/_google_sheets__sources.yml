@@ -10,13 +10,9 @@ sources:
       schema: false
       identifier: false
 
-    freshness:
-      warn_after: { count: 24, period: hour }
-      error_after: { count: 48, period: hour }
 
     tables:
       - name: budget
-        loaded_at_field: _fivetran_synced
         columns:
           - name: _row
             data_tests:
@@ -25,15 +21,17 @@ sources:
           - name: product_id
             data_tests:
               - relationships:
-                  to: source('sql_server_db','products')
-                  field: product_id
+                  arguments:
+                    to: source('sql_server_db','products')
+                    field: product_id
           - name: quantity
             data_tests:
               - positive_values
           - name: month
           - name: _fivetran_synced
+        config:
+          loaded_at_field: _fivetran_synced
       - name: users
-        loaded_at_field: fecha_alta_sistema
         columns:
           - name: Nombre
           - name: DNI
@@ -45,3 +43,9 @@ sources:
                     error_if: ">1000"
                     warn_if: ">0"
           - name: fecha_alta_sistema
+        config:
+          loaded_at_field: fecha_alta_sistema
+    config:
+      freshness:
+        warn_after: {count: 24, period: hour}
+        error_after: {count: 48, period: hour}
