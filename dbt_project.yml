@@ -1,15 +1,10 @@
-<<<<<<< HEAD
-
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
-name: 'my_new_project'
-=======
 # Name your project! Project names should contain only lowercase characters
 # and underscores. A good package name should reflect your organization's
 # name or the intended use of these models
 name: 'curso_data_engineering'
->>>>>>> c8645663f7e1a1a593b024b36905441e3e3ed072
 version: '1.0.0'
 config-version: 2
 
@@ -25,11 +20,8 @@ test-paths: ["tests"]
 seed-paths: ["seeds"]
 macro-paths: ["macros"]
 snapshot-paths: ["snapshots"]
-<<<<<<< HEAD
-
 target-path: "target"  # directory which will store compiled SQL files
-=======
->>>>>>> c8645663f7e1a1a593b024b36905441e3e3ed072
+
 clean-targets:         # directories to be removed by `dbt clean`
   - "target"
   - "dbt_packages"
@@ -46,12 +38,10 @@ clean-targets:         # directories to be removed by `dbt clean`
 # using the `{{ config(...) }}` macro.
 
 models:
-<<<<<<< HEAD
   my_new_project:
     # Applies to all files under models/example/
     example:
       +materialized: table
-=======
   +transient: false
   curso_data_engineering:
     # Applies to all files under models/example/
@@ -84,4 +74,4 @@ snapshots:
   +target_schema: snapshots
 flags:
   require_generic_test_arguments_property: true
->>>>>>> c8645663f7e1a1a593b024b36905441e3e3ed072
+
