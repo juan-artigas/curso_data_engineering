@@ -25,8 +25,8 @@ sources:
           - name: product_id
             data_tests:
               - relationships:
-                  to: source('sql_server_db','products')
-                  field: product_id
+                    to: source('sql_server_db','products')
+                    field: product_id
           - name: quantity
             data_tests:
               - positive_values
