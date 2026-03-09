@@ -9,7 +9,7 @@ with src_orders as (
     where _fivetran_deleted IS NULL
 ),
 
-renamed as (
+renamed_casted as (
 
     select
         order_id,
