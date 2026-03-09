@@ -1,0 +1,309 @@
+version: 2
+
+sources:
+  - name: sql_server_dbo
+    description: ""
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB"
+    tables:
+      - name: addresses
+        description: Dimension de domicilios
+        columns:
+          - name: address_id
+            data_type: varchar
+            description: UUID of each unique address on the platform.
+            data_tests:
+              - not_null
+              - unique
+          - name: zipcode
+            data_type: number
+            description: codigo postal asociado
+            data_tests:
+              - not_null
+          - name: country
+            data_type: varchar
+            description: Pais
+            data_tests:
+              - not_null
+          - name: address
+            data_type: varchar
+            description: Direccion de domicilio
+            data_tests:
+              - not_null
+          - name: state
+            data_type: varchar
+            description: Estado
+            data_tests:
+              - not_null
+          - name: _fivetran_deleted
+            data_type: boolean
+            description: Marca de borrado
+            data_tests:
+              - not_null
+          - name: _fivetran_synced
+            data_type: timestamp_tz
+            description: Fecha de evento
+            data_tests:
+              - not_null
+      - name: events
+        description: >
+          Data about events in the platform of demo.
+        columns:
+          - name: event_id
+            description: >
+              UUID of each unique event on the platform.
+            data_tests:
+              - not_null
+              - unique
+          - name: session_id
+            description: >
+              UUID of each browsing session on the platform which can contain many events.
+            data_tests:
+              - not_null
+          - name: user_id
+            description: >
+              UUID of the user that this event is associated with.
+            data_tests:
+              - not_null
+          - name: page_url
+            description: >
+              URL that the event happened on.
+            data_tests:
+              - not_null
+          - name: created_at
+            description: >
+              Timestamp of the event (UTC).
+            data_tests:
+              - not_null
+          - name: event_type
+            description: >
+              Type of event.
+            data_tests:
+              - not_null
+          - name: order_id
+            description: >
+              If the event is specific to an order (mostly used for checkout).
+          - name: product_id
+            description: >
+              If the event is specific to a product.
+          - name: _fivetran_synced
+            description: >
+              Date that the data was loaded.
+            data_tests:
+              - not_null
+      - name: order_items
+        description: Datos de ordenes de compra con sus respectivos productos
+        columns:
+          - name: order_id
+            data_type: varchar
+            description: Identificador de orden de compra
+            data_tests:
+              - relationships:
+                  arguments:
+                    field: order_id
+                    to: ref('_src_sql_server_dbo', 'orders')
+              - not_null
+          - name: product_id
+            data_type: varchar
+            description: Identificador de producto
+            data_tests:
+              - relationships:
+                  arguments:
+                    field: product_id
+                    to: ref('_src_sql_server_dbo', 'products')
+              - not_null
+          - name: quantity
+            data_type: number
+            description: cantidad solicitada de productos
+            data_tests:
+              - not_null
+          - name: _fivetran_deleted
+            data_type: boolean
+            description: Marca de borrado
+          - name: _fivetran_synced
+            data_type: timestamp_tz
+            description: Fecha de evento
+            data_tests:
+              - not_null
+      - name: orders
+        description: Ordenes de compra
+        columns:
+          - name: order_id
+            data_type: varchar
+            description: Identificador unico de orden de compra
+            data_tests:
+              - not_null
+              - unique
+          - name: shipping_service
+            data_type: varchar
+            description: Servicio de mensajeria de paquetes
+          - name: shipping_cost
+            data_type: float
+            description: Costo de envio
+            data_tests:
+              - not_null
+          - name: address_id
+            data_type: varchar
+            description: Identificador de direccion
+            data_tests:
+              - relationships:
+                  arguments:
+                    field: address_id
+                    to: ref('_src_sql_server_dbo', 'addresses')
+              - not_null
+          - name: created_at
+            data_type: timestamp_tz
+            description: Fecha de creacion de la orden
+            data_tests:
+              - not_null
+          - name: promo_id
+            data_type: varchar
+            description: Identificador de promocion
+          - name: estimated_delivery_at
+            data_type: timestamp_tz
+            description: tiempo estimado de entrega
+          - name: order_cost
+            data_type: float
+            description: importe de la orden
+            data_tests:
+              - not_null
+          - name: user_id
+            data_type: varchar
+            description: ""
+            data_tests:
+              - relationships:
+                  arguments:
+                    field: address_id
+                    to: ref('_src_sql_server_dbo', 'users')
+              - not_null
+          - name: order_total
+            data_type: float
+            description: importe total de la orden
+            data_tests:
+              - not_null
+          - name: delivered_at
+            data_type: timestamp_tz
+            description: fecha de entrega de pedido
+          - name: tracking_id
+            data_type: varchar
+            description: id de trackeo de la orden
+          - name: status
+            data_type: varchar
+            description: estado de la orden
+            data_tests:
+              - not_null
+          - name: _fivetran_deleted
+            data_type: boolean
+            description: marca de borrado
+          - name: _fivetran_synced
+            data_type: timestamp_tz
+            description: fecha de evento
+            data_tests:
+              - not_null
+      - name: products
+        description: Productos
+        columns:
+          - name: product_id
+            data_type: varchar
+            description: ID de producto
+            data_tests:
+              - unique
+              - not_null
+          - name: price
+            data_type: float
+            description: Precio de producto
+            data_tests:
+              - not_null
+          - name: name
+            data_type: varchar
+            description: nombre de producto
+            data_tests:
+              - not_null
+          - name: inventory
+            data_type: number
+            description: productos en stock
+          - name: _fivetran_deleted
+            data_type: boolean
+            description: marca de borrado
+          - name: _fivetran_synced
+            data_type: timestamp_tz
+            description: fecha de evento
+
+      - name: promos
+        description: promociones aplicables
+        columns:
+          - name: promo_id
+            data_type: varchar
+            description: ID de promocion
+            data_tests:
+              - unique
+              - not_null
+          - name: discount
+            data_type: number
+            description: Descuento aplicado
+            data_tests:
+              - not_null
+          - name: status
+            data_type: varchar
+            description: estado de la promocion
+            data_tests:
+              - not_null
+          - name: _fivetran_deleted
+            data_type: boolean
+            description: marca de borrado
+          - name: _fivetran_synced
+            data_type: timestamp_tz
+            description: fecha de evento
+
+      - name: users
+        description: informacion de usuarios
+        columns:
+          - name: user_id
+            data_type: varchar
+            description: ID de usuario
+            data_tests:
+              - unique
+              - not_null
+          - name: updated_at
+            data_type: timestamp_tz
+            description: fecha de actualizacion de los datos de usuario
+            data_tests:
+              - not_null
+          - name: address_id
+            data_type: varchar
+            description: id de direccion del usuario
+            data_tests:
+              - relationships:
+                  arguments:
+                    field: order_id
+                    to: ref('_src_sql_server_dbo', 'addresses')
+              - not_null
+          - name: last_name
+            data_type: varchar
+            description: apellido del usuario
+            data_tests:
+              - not_null
+          - name: created_at
+            data_type: timestamp_tz
+            description: fecha de creacion de usuario
+            data_tests:
+              - not_null
+          - name: phone_number
+            data_type: varchar
+            description: numero telefonico de usuario
+          - name: total_orders
+            data_type: number
+            description: ordenes totales del usuario
+          - name: first_name
+            data_type: varchar
+            description: nombre del usuario
+            data_tests:
+              - not_null
+          - name: email
+            data_type: varchar
+            description: correo electronico del usuario
+          - name: _fivetran_deleted
+            data_type: boolean
+            description: marca de borrado
+          - name: _fivetran_synced
+            data_type: timestamp_tz
+            description: fecha de evento

@@ -1,0 +1,8 @@
+version: 2
+
+sources:
+  - name: stripe
+    schema: stripe # this is the schema our raw data lives in
+    database: "{{ env_var('DBT_ENVIRONMENTS') }}_BRONZE_DB" # this is the name of our database  
+    tables:
+      - name: payments
