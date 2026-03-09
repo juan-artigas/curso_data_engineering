@@ -9,7 +9,7 @@ with src_promos as (
     where _fivetran_deleted IS NULL
 ),
 
-renamed as (
+renamed_casted as (
 
     select
         promo_id,
