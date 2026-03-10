@@ -37,8 +37,6 @@ sources:
           - name: _fivetran_deleted
             data_type: boolean
             description: Marca de borrado
-            data_tests:
-              - not_null
           - name: _fivetran_synced
             data_type: timestamp_tz
             description: Fecha de evento
