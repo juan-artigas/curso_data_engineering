@@ -31,7 +31,7 @@ final as(
 
     from orders
     left join order_payments using (order_id)
-
+-- Agregado de comentario para testeo de JOB CI
 )
 select * from final
 {% if is_incremental() %}
