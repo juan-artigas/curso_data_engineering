@@ -1,0 +1,77 @@
+models:
+  - name: fct_customer_orders
+    group: finance
+    access: public
+    config:
+      contract:
+        enforced: true
+    latest_version: 1
+    columns:
+      - name: ORDER_ID
+        data_type: int
+        constraints:
+          - type: not_null
+      - name: CUSTOMER_ID
+        data_type: int
+      - name: ORDER_PLACED_AT
+        data_type: date
+      - name: ORDER_STATUS
+        data_type: varchar
+      - name: TOTAL_AMOUNT_PAID
+        data_type: int
+      - name: PAYMENT_FINALIZED_DATE
+        data_type: date
+      - name: CUSTOMER_FIRST_NAME
+        data_type: varchar
+      - name: CUSTOMER_LAST_NAME
+        data_type: varchar
+      - name: TRANSACTION_SEQ
+        data_type: int
+      - name: CUSTOMER_SALES_SEQ
+        data_type: int
+      - name: NVSR
+        data_type: varchar
+      - name: CUSTOMER_LIFETIME_VALUE
+        data_type: int
+      - name: FDOS
+        data_type: date
+    versions:
+      - v: 1
+        config:
+          alias: fct_customer_orders
+      - v: 2
+        columns:
+          - name: ORDER_STATUS_NEW
+            data_type: varchar
+          - name: PAYMENT_FINALIZED_DATE 
+            data_type: date
+          - include: all
+            exclude: [ORDER_STATUS]
+  # - name: fct_orders
+  #   config:
+  #     contract:
+  #       enforced: true
+  #   latest_version: 1
+  #   columns:
+  #     - name: ORDER_ID
+  #       data_type: int
+  #       constraints:
+  #         - type: not_null
+  #     - name: CUSTOMER_ID
+  #       data_type: int
+  #     - name: ORDER_DATE
+  #       data_type: date
+  #     - name: AMOUNT
+  #       data_type: int
+    # versions:
+    #   - v: 1
+    #     config:
+    #       alias: fct_orders
+    #   - v: 2
+    #     columns:
+    #       - name: ORDER_DATE
+    #         data_type: date
+    #       - name: ORDER_AMOUNT
+    #         data_type: int
+    #       - include: all
+    #       - exclude: [AMOUNT]
