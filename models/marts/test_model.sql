@@ -1,0 +1,1 @@
+SELECT * from {{ ref('fct_customer_orders',v=1) }}
