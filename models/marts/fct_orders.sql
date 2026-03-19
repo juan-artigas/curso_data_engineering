@@ -1,7 +1,8 @@
 {{ config(
     materialized="incremental", 
     unique_key="order_id", 
-    meta={'incrementa_strategy': 'merge'}
+    meta={'incrementa_strategy': 'merge'},
+    on_schema_change='fail'
 ) }}
 
 
