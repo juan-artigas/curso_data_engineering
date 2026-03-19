@@ -47,31 +47,32 @@ models:
             data_type: date
           - include: all
             exclude: [ORDER_STATUS]
-  # - name: fct_orders
-  #   config:
-  #     contract:
-  #       enforced: true
-  #   latest_version: 1
-  #   columns:
-  #     - name: ORDER_ID
-  #       data_type: int
-  #       constraints:
-  #         - type: not_null
-  #     - name: CUSTOMER_ID
-  #       data_type: int
-  #     - name: ORDER_DATE
-  #       data_type: date
-  #     - name: AMOUNT
-  #       data_type: int
-    # versions:
-    #   - v: 1
-    #     config:
-    #       alias: fct_orders
-    #   - v: 2
-    #     columns:
-    #       - name: ORDER_DATE
-    #         data_type: date
-    #       - name: ORDER_AMOUNT
-    #         data_type: int
-    #       - include: all
-    #       - exclude: [AMOUNT]
+  - name: fct_orders
+    access: public
+    config:
+      contract:
+        enforced: true
+    latest_version: 1
+    columns:
+      - name: ORDER_ID
+        data_type: int
+        constraints:
+          - type: not_null
+      - name: CUSTOMER_ID
+        data_type: int
+      - name: ORDER_DATE
+        data_type: date
+      - name: AMOUNT
+        data_type: int
+    versions:
+      - v: 1
+        config:
+          alias: fct_orders
+      - v: 2
+        columns:
+          - name: ORDER_DATE
+            data_type: date
+          - name: ORDER_AMOUNT
+            data_type: int
+          - include: all
+            exclude: [AMOUNT]
