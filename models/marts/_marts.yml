@@ -76,3 +76,4 @@ models:
             data_type: int
           - include: all
             exclude: [AMOUNT]
+
